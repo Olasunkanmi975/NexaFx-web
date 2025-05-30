@@ -1,5 +1,5 @@
-import PrivacyPolicySkeleton from '../components/PrivacyPolicySkeleton';
+import PrivacyPolicySkeleton from "@/components/skeletons/PrivacyPolicySkeleton";
 
 export default function PrivacyPolicyLoading() {
   return <PrivacyPolicySkeleton />;
-} 
+}

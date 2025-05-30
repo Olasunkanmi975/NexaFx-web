@@ -1,6 +1,6 @@
 export default function HowItWorkSection() {
   return (
-    <section className="bg-gray-50 py-24 w-full">
+    <section className="bg-gray-50 py-24 w-full" id="how-it-works">
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-1 text-sm font-medium text-black bg-yellow-100 rounded-md mb-4">

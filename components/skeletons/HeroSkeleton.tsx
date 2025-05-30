@@ -1,8 +1,8 @@
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function HeroSkeleton() {
   return (
-    <div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-12 px-4 md:px-6">
+    <div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-12 px-4 md:px-6 container mx-auto">
       {/* Left side content */}
       <div className="flex-1 space-y-6">
         <div className="space-y-4">
@@ -35,14 +35,12 @@ export function HeroSkeleton() {
               <Skeleton className="h-8 w-28" /> {/* Amount */}
             </div>
           </div>
-          
           {/* Exchange Rate */}
           <Skeleton className="h-6 w-48 mx-auto" /> {/* Exchange rate text */}
-          
           {/* Exchange Button */}
           <Skeleton className="h-12 w-full" /> {/* Exchange button */}
         </div>
       </div>
     </div>
-  )
+  );
 }

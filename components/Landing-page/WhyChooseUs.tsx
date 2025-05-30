@@ -76,7 +76,7 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section className="bg-gray-50 w-full">
+    <section className="bg-gray-50 w-full" id="features">
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-1 text-sm font-medium text-black bg-blue-100 rounded-md mb-4">
