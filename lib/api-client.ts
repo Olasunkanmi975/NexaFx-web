@@ -1,4 +1,6 @@
 import { useAuthStore } from '@/hooks/use-auth-store';
+import { ApiError } from '@/lib/types/api';
+import { getAccessToken, getRefreshToken } from '@/lib/utils/token';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 const PROXY_URL = '/api/proxy';
@@ -21,7 +23,7 @@ function onRefreshed(token: string) {
 }
 
 async function refreshToken(): Promise<string | null> {
-  const refreshTokenStr = typeof window !== 'undefined' ? localStorage.getItem('refresh_token') : null;
+  const refreshTokenStr = getRefreshToken();
   if (!refreshTokenStr) return null;
 
   try {
@@ -32,11 +34,14 @@ async function refreshToken(): Promise<string | null> {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to refresh token');
+      throw new ApiError(response.status, 'Failed to refresh token');
     }
 
-    const data = await response.json();
-    const { accessToken, refreshToken: newRefreshToken } = data;
+    const json = await response.json();
+    // Handle both direct shape and wrapped shape from backend
+    const resData = json.data ?? json;
+    const accessToken = resData.accessToken ?? resData.access_token;
+    const newRefreshToken = resData.refreshToken ?? resData.refresh_token;
 
     if (accessToken && newRefreshToken) {
       useAuthStore.getState().setTokens(accessToken, newRefreshToken);
@@ -70,7 +75,7 @@ export async function apiClient<T>(
   const finalUrl = searchParams.toString() ? `${url}?${searchParams.toString()}` : url;
 
   const getHeaders = () => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+    const token = getAccessToken();
     const headers = new Headers(fetchOptions.headers || {});
     if (!headers.has('Content-Type')) {
       headers.set('Content-Type', 'application/json');
@@ -104,7 +109,7 @@ export async function apiClient<T>(
       } else {
         refreshSubscribers = [];
         const data = await response.clone().json().catch(() => ({}));
-        throw new Error(data?.message || 'Unauthorized');
+        throw new ApiError(response.status, data?.message || 'Unauthorized');
       }
     } else {
       return new Promise<T>((resolve, reject) => {
@@ -112,8 +117,8 @@ export async function apiClient<T>(
           try {
             const retryResponse = await executeRequest();
             if (!retryResponse.ok) {
-              const data = await retryResponse.json().catch(() => ({}));
-              reject(new Error(data?.message || `Request failed with status ${retryResponse.status}`));
+              const data = await retryResponse.clone().json().catch(() => ({}));
+              reject(new ApiError(retryResponse.status, data?.message || `Request failed with status ${retryResponse.status}`));
               return;
             }
             resolve(await retryResponse.json());
@@ -128,8 +133,8 @@ export async function apiClient<T>(
   }
 
   if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
-    throw new Error(data?.message || `Request failed with status ${response.status}`);
+    const data = await response.clone().json().catch(() => ({}));
+    throw new ApiError(response.status, data?.message || `Request failed with status ${response.status}`);
   }
 
   return response.json();
