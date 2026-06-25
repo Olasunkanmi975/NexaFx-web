@@ -1,15 +1,21 @@
+<<<<<<< HEAD
 import { useAuthStore } from '@/hooks/use-auth-store';
 import { ApiError } from '@/lib/types/api';
 import { getAccessToken, getRefreshToken } from '@/lib/utils/token';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 const PROXY_URL = '/api/proxy';
+=======
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+const PROXY_URL = "/api/proxy";
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 
 interface RequestOptions extends RequestInit {
   params?: Record<string, string>;
   useProxy?: boolean;
 }
 
+<<<<<<< HEAD
 let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];
 
@@ -55,11 +61,14 @@ async function refreshToken(): Promise<string | null> {
   }
 }
 
+=======
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 export async function apiClient<T>(
   path: string,
   options: RequestOptions = {},
 ): Promise<T> {
   const { params, useProxy = true, ...fetchOptions } = options;
+<<<<<<< HEAD
   
   let url = '';
   if (useProxy) {
@@ -68,10 +77,18 @@ export async function apiClient<T>(
     url = `${BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;
   }
   
+=======
+
+  const url = useProxy
+    ? `${PROXY_URL}${path.startsWith("/") ? path : `/${path}`}`
+    : `${BASE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
   const searchParams = new URLSearchParams();
   if (params) {
     Object.keys(params).forEach((key) => searchParams.append(key, params[key]));
   }
+<<<<<<< HEAD
   const finalUrl = searchParams.toString() ? `${url}?${searchParams.toString()}` : url;
 
   const getHeaders = () => {
@@ -85,11 +102,32 @@ export async function apiClient<T>(
         headers.set('x-client-token', token);
       } else {
         headers.set('Authorization', `Bearer ${token}`);
+=======
+  const finalUrl = searchParams.toString()
+    ? `${url}?${searchParams.toString()}`
+    : url;
+
+  const getHeaders = () => {
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("access_token")
+        : null;
+    const headers = new Headers(fetchOptions.headers || {});
+    if (!headers.has("Content-Type")) {
+      headers.set("Content-Type", "application/json");
+    }
+    if (token) {
+      if (useProxy) {
+        headers.set("x-client-token", token);
+      } else {
+        headers.set("Authorization", `Bearer ${token}`);
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
       }
     }
     return headers;
   };
 
+<<<<<<< HEAD
   const executeRequest = (): Promise<Response> => {
     return fetch(finalUrl, {
       ...fetchOptions,
@@ -135,6 +173,18 @@ export async function apiClient<T>(
   if (!response.ok) {
     const data = await response.clone().json().catch(() => ({}));
     throw new ApiError(response.status, data?.message || `Request failed with status ${response.status}`);
+=======
+  const response = await fetch(finalUrl, {
+    ...fetchOptions,
+    headers: getHeaders(),
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(
+      data?.message || `Request failed with status ${response.status}`,
+    );
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
   }
 
   return response.json();

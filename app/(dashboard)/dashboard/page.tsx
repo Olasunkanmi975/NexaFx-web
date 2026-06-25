@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 import { AccountOverview } from "@/components/dashboard/account-overview";
 import DepositMethods from "@/components/dashboard/deposit";
@@ -57,4 +58,8 @@ export default function DashboardPage() {
       )}
     </div>
   );
+=======
+export default function DashboardPage() {
+  return <div>Dashboard</div>;
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 }

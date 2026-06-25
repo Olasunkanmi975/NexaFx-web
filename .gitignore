@@ -29,7 +29,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+<<<<<<< HEAD
 pnpm-lock.yaml
+=======
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 
 # env files (can opt-in for committing if needed)
 .env*

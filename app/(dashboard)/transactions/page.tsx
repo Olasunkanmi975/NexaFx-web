@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -179,4 +180,8 @@ useEffect(() => {
             />
         </div>
     );
+=======
+export default function TransactionsPage() {
+  return <div>Transactions</div>;
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 }

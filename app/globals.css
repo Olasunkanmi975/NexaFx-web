@@ -6,10 +6,15 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+<<<<<<< HEAD
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-brand: var(--brand);
   --bg-overview-gradient: var(--overview-gradient);
+=======
+  --font-sans: var(--font-inter);
+  --color-brand: var(--brand);
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -43,13 +48,17 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+<<<<<<< HEAD
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+=======
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 }
 
 :root {
   --radius: 0.75rem;
+<<<<<<< HEAD
   --background: #F5F5F5;
   --foreground: #0A0A0A;
   --card: #FFFFFF;
@@ -79,10 +88,44 @@
   --sidebar-accent: #FFF9E6;
   --sidebar-accent-foreground: #0A0A0A;
   --sidebar-border: #E5E5E5;
+=======
+  --background: #f5f5f5;
+  --foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+  --primary: #ffd552;
+  --primary-foreground: #0a0a0a;
+  --secondary: #ffffff;
+  --secondary-foreground: #0a0a0a;
+  --muted: #f1f1f1;
+  --muted-foreground: #666666;
+  --accent: #ffd552;
+  --accent-foreground: #0a0a0a;
+  --destructive: #ff4d4f;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #ffd552;
+  --brand: #ffd552;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #666666;
+  --sidebar-primary: #ffd552;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #fff9e6;
+  --sidebar-accent-foreground: #0a0a0a;
+  --sidebar-border: #e5e5e5;
+  --chart-1: #ffd552;
+  --chart-2: #a0c3fd;
+  --chart-3: #0a0a0a;
+  --chart-4: #666666;
+  --chart-5: #ff4d4f;
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 }
 
 .dark {
   --background: #000000;
+<<<<<<< HEAD
   --foreground: #FFFFFF;
   --card: #121212;
   --card-foreground: #FFFFFF;
@@ -118,12 +161,44 @@
 
   * {
     @apply border-border outline-ring/50;
+=======
+  --foreground: #ffffff;
+  --card: #121212;
+  --card-foreground: #ffffff;
+  --popover: #121212;
+  --popover-foreground: #ffffff;
+  --primary: #ffd552;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #ffffff;
+  --muted: #1a1a1a;
+  --muted-foreground: #a1a1aa;
+  --accent: #ffd552;
+  --accent-foreground: #0a0a0a;
+  --destructive: #ff4d4f;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #ffd552;
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #a1a1aa;
+  --sidebar-primary: #ffd552;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1a1a1a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #27272a;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
   }
 
   body {
     @apply bg-background text-foreground;
   }
 }
+<<<<<<< HEAD
 
 
 .exchange-rates::-webkit-scrollbar {
@@ -187,3 +262,5 @@
 .gradient-blue-yellow {
   background: linear-gradient(240.3deg, #a0c3fd -1.74%, #ffe79c 99.3%);
 }
+=======
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49

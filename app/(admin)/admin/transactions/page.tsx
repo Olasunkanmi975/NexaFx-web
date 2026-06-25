@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
@@ -82,4 +83,8 @@ export default function TransactionPage() {
       <TableTransaction transactions={filteredTransactions} />
     </div>
   );
+=======
+export default function AdminTransactionsPage() {
+  return <div>Admin Transactions</div>;
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 }

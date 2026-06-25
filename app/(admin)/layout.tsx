@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { useState } from "react";
@@ -73,4 +74,12 @@ export default function AdminLayout({
             </div>
         </AdminGuard>
     );
+=======
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <>{children}</>;
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 }

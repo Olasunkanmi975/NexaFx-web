@@ -4,7 +4,11 @@
   "rsc": true,
   "tsx": true,
   "tailwind": {
+<<<<<<< HEAD
     "config": "",
+=======
+    "config": "tailwind.config.ts",
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
     "css": "app/globals.css",
     "baseColor": "neutral",
     "cssVariables": true,

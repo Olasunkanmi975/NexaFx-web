@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -9,11 +10,14 @@ import { useAuthStore } from '../../hooks/use-auth-store';
 import { useRouter } from 'next/navigation';
 import { useSidebarStore } from '../../hooks/use-sidebar-store';
 
+=======
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+<<<<<<< HEAD
   const { isOpen, close } = useSidebarStore();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const { isAuthenticated, accessToken } = useAuthStore();
@@ -72,4 +76,7 @@ export default function DashboardLayout({
       </div>
     </div>
   );
+=======
+  return <>{children}</>;
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 }

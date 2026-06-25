@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
@@ -139,4 +140,8 @@ export default function PushNotificationsPage() {
             )}
         </div>
     );
+=======
+export default function PushNotificationsPage() {
+  return <div>Push Notifications</div>;
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 }

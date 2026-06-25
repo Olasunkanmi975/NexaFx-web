@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -419,4 +420,8 @@ function ResetPasswordContent() {
       </div>
     </div>
   );
+=======
+export default function ResetPasswordPage() {
+  return <div>Reset Password</div>;
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 }

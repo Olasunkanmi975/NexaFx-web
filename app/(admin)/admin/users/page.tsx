@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
@@ -234,4 +235,8 @@ export default function UsersPage() {
       )}
     </div>
   );
+=======
+export default function UsersPage() {
+  return <div>Users</div>;
+>>>>>>> 764c305853999c314cc80ab46a510043b8848d49
 }
