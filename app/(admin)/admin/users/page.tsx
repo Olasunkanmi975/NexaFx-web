@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps, @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Search, Filter, Loader2 } from 'lucide-react';
 import { AdminUser, getAdminUsers } from '@/lib/api/admin';
 import { AdminUserTable } from '@/components/admin/AdminUserTable';
@@ -55,10 +55,10 @@ export default function UsersPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      fetchUsers();
+      loadUsers();
     }, 0);
     return () => clearTimeout(timer);
-  }, [fetchUsers]);
+  }, [loadUsers]);
 
   // Filter users based on search query
   const filteredUsers = useMemo(() => {
