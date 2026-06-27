@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { getBalances } from "@/lib/api/wallet";
 import { getProfile } from "@/lib/api/users";
+import { haptics } from "@/lib/utils/haptics";
 
 const truncateAddress = (addr: string) =>
   `${addr.slice(0, 6)}...${addr.slice(-4)}`;
@@ -96,6 +97,7 @@ export function AccountOverview({
     try {
       await navigator.clipboard.writeText(walletAddress);
       setCopied(true);
+      haptics.light();
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy address:", err);

@@ -157,6 +157,23 @@ export async function updateUserKyc(id: string, status: 'Verified' | 'Unverified
     });
 }
 
+export interface AllowedIp {
+  id: string
+  ip: string
+  label: string
+  addedBy: string
+  addedAt: string
+}
+
+export const getIpAllowlist = (): Promise<AllowedIp[]> =>
+  apiClient('/admin/security/ip-allowlist', { headers: getAuthHeaders() });
+
+export const addIpToAllowlist = (ip: string, label: string): Promise<AllowedIp> =>
+  apiClient('/admin/security/ip-allowlist', { method: 'POST', headers: getAuthHeaders(), body: JSON.stringify({ ip, label }) });
+
+export const removeIpFromAllowlist = (id: string): Promise<void> =>
+  apiClient(`/admin/security/ip-allowlist/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+
 export async function getAdminTransactions(query: AdminTransactionsQuery = {}): Promise<{ data: AdminTransaction[]; total: number }> {
     const params: Record<string, string> = {};
     if (query.page) params.page = String(query.page);

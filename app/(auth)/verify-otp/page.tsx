@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useAuthStore } from '@/hooks/use-auth-store';
 import { useRouter } from 'next/navigation';
+import { haptics } from '@/lib/utils/haptics';
 
 export default function VerifyOtpPage() {
   const router = useRouter();
@@ -76,9 +77,11 @@ export default function VerifyOtpPage() {
       const fullName = [res.user.firstName, res.user.lastName].filter(Boolean).join(' ');
       setAuth({ ...res.user, name: fullName }, res.accessToken, res.refreshToken);
       setIsLoading(false);
+      haptics.success();
       router.push('/dashboard');
     } catch (err: unknown) {
       setIsLoading(false);
+      haptics.error();
       setError(err instanceof Error ? err.message : 'Invalid or expired OTP');
     }
   };

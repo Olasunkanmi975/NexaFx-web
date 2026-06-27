@@ -5,6 +5,9 @@ import { AccountIcon, SecurityIcon, IdentityIcon } from "../icons";
 import { AccountInfo } from "./account-info";
 import { Security } from "./security";
 import { Notification } from "./notification";
+import { NotificationPreferences } from "./notification-preferences";
+import { WebAuthnSection } from "./webauthn-section";
+import { Bell } from "lucide-react";
 import { ProfileOverview } from "../profile/profile-overview";
 import { PersonalInfo } from "../profile/personal-info";
 import { VerificationBanner } from "../profile/verification-banner";
@@ -35,12 +38,19 @@ export function TabsSettings() {
           />
           Security
         </TabsTrigger>
-        <TabsTrigger value="notification">
-          <SecurityIcon
-            color={isActiveTap === "notification" ? "#000" : ""}
+        <TabsTrigger value="notifications">
+          <Bell
+            color={isActiveTap === "notifications" ? "#000" : ""}
             className="size-3.5"
           />
-          Notification
+          Notifications
+        </TabsTrigger>
+        <TabsTrigger value="push-notification">
+          <SecurityIcon
+            color={isActiveTap === "push-notification" ? "#000" : ""}
+            className="size-3.5"
+          />
+          Push Notifications
         </TabsTrigger>
         <TabsTrigger value="identity">
           <IdentityIcon
@@ -56,8 +66,14 @@ export function TabsSettings() {
       </TabsContent>
       <TabsContent value="security">
         <Security />
+        <div className="mt-8 rounded-2xl border border-border/50 bg-card p-5">
+          <WebAuthnSection />
+        </div>
       </TabsContent>
-      <TabsContent value="notification">
+      <TabsContent value="notifications">
+        <NotificationPreferences />
+      </TabsContent>
+      <TabsContent value="push-notification">
         <Notification />
       </TabsContent>
       <TabsContent value="identity">

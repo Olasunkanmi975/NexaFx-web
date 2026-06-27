@@ -3,7 +3,8 @@
 import { useWithdrawalStore } from "@/hooks/useWithdrawalStore";
 import { CheckCircle2, XCircle, Copy, ExternalLink, Coins, CircleDollarSign, BadgeDollarSign } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { haptics } from "@/lib/utils/haptics";
 
 const currencies = [
     { id: 'USDC', name: 'USD Coin', icon: <CircleDollarSign className="w-8 h-8 text-blue-500" /> },
@@ -18,10 +19,19 @@ export function WithdrawalSuccess() {
     const selectedCurrency = currencies.find(c => c.id === currency) || currencies[0];
     const isSuccess = transactionStatus === 'success';
 
+    useEffect(() => {
+        if (isSuccess) {
+            haptics.success();
+        } else {
+            haptics.error();
+        }
+    }, []);
+
     const handleCopyTxId = () => {
         if (transactionId) {
             navigator.clipboard.writeText(transactionId);
             setCopied(true);
+            haptics.light();
             setTimeout(() => setCopied(false), 2000);
         }
     };
