@@ -1,44 +1,71 @@
-'use client'
-import { useState, useRef, useCallback } from 'react'
+"use client";
 
-interface UseSwipeToCloseOptions {
-  onClose: () => void
-  direction?: 'right' | 'down'
-  threshold?: number
+import { useRef, useCallback, useEffect } from "react";
+
+const SWIPE_THRESHOLD = 80;
+
+interface SwipeToCloseOptions {
+  onSwipe: () => void;
+  direction?: "left" | "right";
+  disabled?: boolean;
 }
 
-export function useSwipeToClose({ onClose, direction = 'right', threshold = 100 }: UseSwipeToCloseOptions) {
-  const [swipeOffset, setSwipeOffset] = useState(0)
-  const startPos = useRef(0)
-  const swiping = useRef(false)
+export function useSwipeToClose({
+  onSwipe,
+  direction = "left",
+  disabled = false,
+}: SwipeToCloseOptions) {
+  const startX = useRef(0);
+  const startY = useRef(0);
 
-  const onTouchStart = useCallback((e: React.TouchEvent) => {
-    startPos.current = direction === 'right' ? e.touches[0].clientX : e.touches[0].clientY
-    swiping.current = true
-  }, [direction])
+  const handleTouchStart = useCallback(
+    (e: TouchEvent) => {
+      if (disabled) return;
+      startX.current = e.touches[0].clientX;
+      startY.current = e.touches[0].clientY;
+    },
+    [disabled],
+  );
 
-  const onTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!swiping.current) return
-    const currentPos = direction === 'right' ? e.touches[0].clientX : e.touches[0].clientY
-    const diff = currentPos - startPos.current
-    if (diff > 0) {
-      setSwipeOffset(diff)
-    }
-  }, [direction])
+  const handleTouchEnd = useCallback(
+    (e: TouchEvent) => {
+      if (disabled) return;
+      if (startX.current === 0) return;
 
-  const onTouchEnd = useCallback(() => {
-    if (!swiping.current) return
-    swiping.current = false
-    if (swipeOffset >= threshold) {
-      onClose()
-    }
-    setSwipeOffset(0)
-  }, [swipeOffset, threshold, onClose])
+      const endX = e.changedTouches[0].clientX;
+      const endY = e.changedTouches[0].clientY;
+      const diffX = endX - startX.current;
+      const diffY = endY - startY.current;
 
-  return {
-    swipeOffset,
-    onTouchStart,
-    onTouchMove,
-    onTouchEnd,
-  }
+      const isHorizontal = Math.abs(diffX) > Math.abs(diffY) * 1.5;
+
+      if (!isHorizontal) {
+        startX.current = 0;
+        return;
+      }
+
+      const isRightSwipe = diffX > 0;
+      const matchesDirection =
+        (direction === "left" && !isRightSwipe && Math.abs(diffX) >= SWIPE_THRESHOLD) ||
+        (direction === "right" && isRightSwipe && diffX >= SWIPE_THRESHOLD);
+
+      if (matchesDirection) {
+        onSwipe();
+      }
+
+      startX.current = 0;
+    },
+    [disabled, direction, onSwipe],
+  );
+
+  useEffect(() => {
+    if (disabled) return;
+    document.addEventListener("touchstart", handleTouchStart, { passive: true });
+    document.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [disabled, handleTouchStart, handleTouchEnd]);
 }

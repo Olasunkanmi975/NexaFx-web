@@ -36,6 +36,12 @@ export function NotificationsPanel() {
     unreadCount,
   } = useNotificationsStore();
 
+  useSwipeToClose({
+    onSwipe: close,
+    direction: "right",
+    disabled: !isOpen,
+  });
+
   useEffect(() => {
     if (isOpen) {
       fetchNotifications();
