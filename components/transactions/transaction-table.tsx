@@ -23,7 +23,13 @@ export function TransactionTable({ transactions, onSelectTransaction }: Transact
                     </tr>
                 </thead>
                 <tbody className="divide-y border-border">
-                    {transactions.map((tx) => (
+                    {transactions.length === 0 ? (
+                        <tr>
+                            <td colSpan={5} className="px-6 py-10 text-center text-sm text-muted-foreground">
+                                No transactions yet
+                            </td>
+                        </tr>
+                    ) : transactions.map((tx) => (
                         <tr 
                             key={tx.id} 
                             onClick={() => onSelectTransaction(tx)}
