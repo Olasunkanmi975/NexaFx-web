@@ -1,6 +1,11 @@
-"use client";
+import type { Metadata } from "next";
+import dynamic from "next/dynamic";
+import DashboardLayoutClient from "./dashboard-layout-client";
 
-import { useEffect, useState } from "react";
+const SupportChat = dynamic(
+  () => import("@/components/shared/support-chat").then((m) => m.SupportChat),
+  { ssr: false },
+);
 
 import { Sidebar } from "../../components/dashboard/sidebar";
 import { Topbar } from "../../components/dashboard/topbar";
@@ -11,6 +16,9 @@ import { useAuthStore } from "../../hooks/use-auth-store";
 import { useRouter } from "next/navigation";
 import { useSidebarStore } from "../../hooks/use-sidebar-store";
 import { useSessionTimeout } from "@/hooks/use-session-timeout";
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function DashboardLayout({
   children,
@@ -132,5 +140,10 @@ export default function DashboardLayout({
         remainingTimeMs={remainingTime}
       />
     </div>
+  return (
+    <>
+      <DashboardLayoutClient>{children}</DashboardLayoutClient>
+      <SupportChat />
+    </>
   );
 }

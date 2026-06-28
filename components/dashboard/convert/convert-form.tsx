@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useMemo, useEffect, useRef } from "react";
-import { ChevronDown, AlertCircle, ArrowDownUp, Loader2 } from "lucide-react";
+import { ChevronDown, AlertCircle, ArrowDownUp, Loader2, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getBalances } from "@/lib/api/wallet";
 import { createSwap } from "@/lib/api/transactions";
-import { getExchangeRate } from "@/lib/api/exchange-rates";
 import { getRequestErrorMessage } from "@/lib/api-client";
+import { EmptyState } from "@/components/shared/empty-state";
 
 interface CurrencyOption {
   id: string;
@@ -36,6 +36,7 @@ export function ConvertForm() {
   const [isLoadingRate, setIsLoadingRate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rateError, setRateError] = useState<string | null>(null);
+  const [rateRetryCount, setRateRetryCount] = useState(0);
   const hadExchangeRateRef = useRef(false);
 
   const fromCurrencyData =
@@ -62,10 +63,43 @@ export function ConvertForm() {
       });
   }, []);
 
-  useEffect(() => {
-    if (!fromCurrency || !toCurrency) return;
-    setIsLoadingRate(true);
-    setRateError(null);
+    useEffect(() => {
+        if (!fromCurrency || !toCurrency) return;
+        
+        let active = true;
+        
+        Promise.resolve().then(() => {
+            if (active) {
+                setIsLoadingRate(true);
+                setRateError(null);
+            }
+        });
+        
+        fetch(`/api/exchange-rates?from=${fromCurrency}&to=${toCurrency}`)
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to fetch rate");
+                return res.json();
+            })
+            .then(data => {
+                if (!active) return;
+                if (data.rate) {
+                    setExchangeRate(Number(data.rate));
+                } else {
+                    setExchangeRate(0);
+                    setRateError("Rates unavailable");
+                }
+            })
+            .catch(err => {
+                if (!active) return;
+                console.error(err);
+                setExchangeRate(0);
+                setRateError("Rates unavailable");
+            })
+            .finally(() => {
+                if (active) {
+                    setIsLoadingRate(false);
+                }
+            });
 
     getExchangeRate(fromCurrency, toCurrency)
       .then((data) => {
@@ -90,7 +124,7 @@ export function ConvertForm() {
       .finally(() => {
         setIsLoadingRate(false);
       });
-  }, [fromCurrency, toCurrency]);
+  }, [fromCurrency, toCurrency, rateRetryCount]);
 
   const convertedAmount = useMemo(() => {
     if (!amount || isNaN(parseFloat(amount)) || exchangeRate === 0) return "";
@@ -438,19 +472,25 @@ export function ConvertForm() {
               </span>
             </div>
           ) : rateError ? (
-            <div className="flex items-center justify-between px-4 py-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive">
-              <span className="text-sm font-medium flex items-center gap-2">
-                <AlertCircle className="h-4 w-4" />
-                {rateError}
-              </span>
-            </div>
+            <EmptyState
+              icon={<BarChart3 className="h-12 w-12" />}
+              title="Rates unavailable"
+              description="We're having trouble fetching exchange rates. Please try again in a few minutes."
+              action={{ label: "Retry", onClick: () => setRateRetryCount((c) => c + 1) }}
+            />
           ) : amount && exchangeRate > 0 ? (
             <div className="flex items-center justify-between px-4 py-3 rounded-lg bg-muted/30 border border-border/50">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground inline-flex items-center gap-1">
                 Exchange Rate
+                <InfoIcon
+                  content="The spread is the difference between the buy and sell price"
+                  size="sm"
+                  side="top"
+                />
               </span>
               <span className="text-sm font-semibold text-foreground">
-                1 {fromCurrency} ={" "}
+                 1 {fromCurrency} ={" "}
+                 <InfoIcon tooltip="Exchange rate includes a 0.5% conversion fee" />
                 {exchangeRate.toLocaleString(undefined, {
                   minimumFractionDigits:
                     fromCurrency === "ETH" || toCurrency === "ETH" ? 2 : 2,
@@ -465,9 +505,14 @@ export function ConvertForm() {
 
         {/* Info Section */}
         <div className="space-y-2 pt-2">
-          <p className="text-xs text-muted-foreground text-center">
+          <p className="text-xs text-muted-foreground text-center inline-flex items-center justify-center gap-1">
             Exchange rates updated in real-time. Your conversion will be locked
             at checkout.
+            <InfoIcon
+              content="Slippage may occur during high volatility — the final rate may differ slightly"
+              size="sm"
+              side="top"
+            />
           </p>
         </div>
 
